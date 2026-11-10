@@ -27,7 +27,8 @@ export default function Home() {
           />
         </svg>
       ),
-      badgeText: "Segera hadir",
+      badgeText: null,
+      isActive: true,
     },
     {
       title: "Formula 1",
@@ -49,6 +50,7 @@ export default function Home() {
         </svg>
       ),
       badgeText: "Segera hadir",
+      isActive: false,
     },
     {
       title: "Basket",
@@ -70,6 +72,7 @@ export default function Home() {
         </svg>
       ),
       badgeText: "Segera hadir",
+      isActive: false,
     },
   ];
 
@@ -79,9 +82,9 @@ export default function Home() {
       <section className="rounded-2xl border border-zinc-200 bg-linear-to-b from-white to-zinc-50/50 p-6 shadow-xs sm:p-10 dark:border-zinc-800 dark:from-zinc-900 dark:to-zinc-950">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800 dark:border-amber-800/60 dark:bg-amber-950/40 dark:text-amber-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
-              Segera hadir
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800 dark:border-emerald-800/60 dark:bg-emerald-950/40 dark:text-emerald-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Live Sports Updates
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-50">
               Dashboard Informasi Olahraga
@@ -111,9 +114,15 @@ export default function Home() {
                     <div className="rounded-lg bg-zinc-100 p-2.5 dark:bg-zinc-800">
                       {sport.icon}
                     </div>
-                    <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
-                      {sport.badgeText}
-                    </span>
+                    {sport.badgeText ? (
+                      <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+                        {sport.badgeText}
+                      </span>
+                    ) : (
+                      <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+                        Data Aktif
+                      </span>
+                    )}
                   </div>
                   <CardTitle className="mt-3 text-lg group-hover:text-zinc-900 dark:group-hover:text-white">
                     {sport.title}
