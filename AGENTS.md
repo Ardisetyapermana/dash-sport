@@ -1,9 +1,36 @@
-<!-- BEGIN:nextjs-agent-rules -->
+<!-- @format -->
 
-## This is NOT the Next.js you know
+# Sports Dashboard
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+Dashboard informasi olahraga (sepak bola, F1, basket; MotoGP
+menyusul). Antarmuka berbahasa Indonesia.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## Stack
 
-<!-- END:nextjs-agent-rules -->
+Next.js (App Router), TypeScript, Tailwind.
+
+## Aturan utama
+
+- Semua data berasal dari API resmi atau publik, tidak boleh
+  dikarang atau di-hardcode.
+- Fetch data di server (Server Components / route handler).
+  API key tidak boleh sampai ke browser.
+- Gunakan cache dan revalidate Next.js agar tidak melewati rate
+  limit API.
+- Tangani loading dan error dengan tampilan yang jelas.
+
+## Struktur
+
+- Tiap olahraga modular di /lib/sports/<nama>/ (client.ts untuk
+  memanggil API, types.ts untuk tipe data).
+- Komponen UI di /components. Halaman di /app/<olahraga>/page.tsx.
+- Menambah olahraga baru = menambah folder dan satu halaman,
+  tanpa mengubah olahraga lain.
+
+## Konvensi
+
+- TypeScript strict, hindari `any`.
+- Secret hanya di .env.local; selalu update .env.example.
+- Jangan tambah library tanpa alasan jelas.
+- Jangan sentuh file di luar lingkup tugas.
+- Setelah perubahan, pastikan `npm run build` lulus.
