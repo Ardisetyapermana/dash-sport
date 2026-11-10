@@ -34,3 +34,8 @@ Next.js (App Router), TypeScript, Tailwind.
 - Jangan tambah library tanpa alasan jelas.
 - Jangan sentuh file di luar lingkup tugas.
 - Setelah perubahan, pastikan `npm run build` lulus.
+
+- Next.js 16: jangan memakai new Date(), Date.now(), atau Math.random()
+  langsung di Server Component. Pakai `await connection()` lalu
+  bungkus komponennya dengan <Suspense>, atau hitung di Client
+  Component.
