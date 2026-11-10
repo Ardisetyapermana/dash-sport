@@ -71,8 +71,8 @@ export default function Home() {
           />
         </svg>
       ),
-      badgeText: "Segera hadir",
-      isActive: false,
+      badgeText: null,
+      isActive: true,
     },
   ];
 

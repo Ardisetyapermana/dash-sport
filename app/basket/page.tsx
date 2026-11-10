@@ -1,63 +1,53 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/Card";
-import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import { Suspense } from "react";
+import { BasketballTabNav } from "@/components/basketball/BasketballTabNav";
+import { BasketballStandingsView } from "@/components/basketball/BasketballStandingsView";
+import { BasketballGamesView } from "@/components/basketball/BasketballGamesView";
+import { BasketballSkeleton } from "@/components/basketball/BasketballSkeleton";
 
-export default function BasketPage() {
-  const sections = [
-    {
-      title: "Klasemen Konferensi",
-      desc: "Klasemen wilayah Barat (West) dan Timur (East) beserta catatan menang-kalah.",
-    },
-    {
-      title: "Jadwal & Skor Pertandingan",
-      desc: "Skor kuarter terkini, jadwal laga hari ini, dan rangkuman pertandingan sebelumnya.",
-    },
-    {
-      title: "Statistik Tim & Pemain",
-      desc: "Poin per game (PPG), rebound, assist, dan statistik utama bintang liga basket.",
-    },
-  ];
+interface BasketPageProps {
+  searchParams: Promise<{
+    tab?: string;
+    date?: string;
+  }>;
+}
+
+export default async function BasketPage({ searchParams }: BasketPageProps) {
+  const resolvedParams = await searchParams;
+  const currentTab = resolvedParams.tab || "klasemen";
+  const selectedDate = resolvedParams.date;
 
   return (
-    <div className="space-y-8">
-      {/* Page Header */}
-      <div className="flex flex-col gap-3 border-b border-zinc-200 pb-6 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800">
-        <div>
-          <div className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:border-amber-800/60 dark:bg-amber-950/40 dark:text-amber-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
-            Segera hadir
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-            Basket
-          </h1>
-          <p className="mt-1 text-sm text-zinc-600 sm:text-base dark:text-zinc-400">
-            Pusat informasi pertandingan basket dunia: jadwal tanding, skor langsung, dan klasemen tim.
-          </p>
-        </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="space-y-1 border-b border-zinc-200 pb-5 dark:border-zinc-800">
+        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
+          Bola Basket
+        </h1>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          Pantau klasemen konferensi NBA, jadwal pertandingan mendatang, dan skor akhir terkini.
+        </p>
       </div>
 
-      {/* Feature Placeholders */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {sections.map((section) => (
-          <Card key={section.title} className="flex flex-col justify-between">
-            <div>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
-                    Segera hadir
-                  </span>
-                </div>
-                <CardTitle className="mt-2 text-base">{section.title}</CardTitle>
-                <CardDescription>{section.desc}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2 pt-2">
-                <LoadingSkeleton variant="text" count={2} />
-              </CardContent>
-            </div>
-            <div className="mt-4 pt-3 text-xs text-zinc-500 dark:text-zinc-500">
-              Integrasi API resmi liga basket
-            </div>
-          </Card>
-        ))}
+      {/* Tab Navigation */}
+      <BasketballTabNav currentTab={currentTab} />
+
+      {/* Tab Content with Suspense */}
+      <div className="pt-2">
+        <Suspense
+          key={`${currentTab}-${selectedDate || ""}`}
+          fallback={<BasketballSkeleton />}
+        >
+          {currentTab === "jadwal" ? (
+            <BasketballGamesView selectedDate={selectedDate} />
+          ) : (
+            <BasketballStandingsView />
+          )}
+        </Suspense>
+      </div>
+
+      {/* Data Source Disclaimer */}
+      <div className="border-t border-zinc-200 pt-4 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+        <p>Data dari API Ninjas. Skor akhir, tanpa update live.</p>
       </div>
     </div>
   );
